@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 import { AuthContext } from "./AuthContext";
 import { saveUser } from "../components/common/StorageService";
+import { toast } from "react-toastify";
 
 const CartContext = createContext();
 
@@ -9,14 +10,12 @@ export function CartProvider({ children }) {
   const { user, setUser } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-  /* ---------- LOAD CART FROM USER ---------- */
   useEffect( () => {
     if (user?.cart) {
       setCart(user.cart);
     }else{setCart([])}
   }, [user]);
 
-  /* ---------- ADD TO CART ---------- */
   const addToCart = async (product, quantity = 1) => {
     if (!user) return;
 
@@ -44,20 +43,16 @@ export function CartProvider({ children }) {
         },
       ];
     }
-
-    // Update local state
     setCart(updatedCart);
+    toast.success("Item added to cart.")
 
-    // Update user in json-server
     const updatedUser = { ...user, cart: updatedCart };
     await api.put(`/users/${user.id}`, updatedUser);
 
-    // Sync AuthContext user
     setUser(updatedUser);
     saveUser(updatedUser);
   };
 
-  /* ---------- REMOVE FROM CART ---------- */
   const removeFromCart = async (productId) => {
     const updatedCart = cart.filter(
       item => item.productId !== productId
@@ -67,10 +62,10 @@ export function CartProvider({ children }) {
 
     const updatedUser = { ...user, cart: updatedCart };
     await api.put(`/users/${user.id}`, updatedUser);
+    toast.success("Item removed from cart.")
     setUser(updatedUser);
   };
 
-  /* ---------- UPDATE QUANTITY ---------- */
   const updateQuantity = async (productId, quantity) => {
     const updatedCart = cart.map(item =>
       item.productId === productId

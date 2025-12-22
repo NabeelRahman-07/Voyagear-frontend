@@ -51,18 +51,13 @@ function Footer() {
               </a>
             </div>
           </div>
-
           {/* Shop Categories */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-secondary">Shop</h3>
             <ul className="space-y-2">
-              <li><Link to="/products/category/bags" className="text-background/80 hover:text-accent transition-colors">Backpacks & Bags</Link></li>
-              <li><Link to="/products/category/tents" className="text-background/80 hover:text-accent transition-colors">Tents & Shelters</Link></li>
-              {/* <li><Link to="/products/category/sleeping" className="text-background/80 hover:text-accent transition-colors">Sleeping Gear</Link></li> */}
-              <li><Link to="/products/category/furniture" className="text-background/80 hover:text-accent transition-colors">Camp Furniture</Link></li>
-              <li><Link to="/products/category/clothing" className="text-background/80 hover:text-accent transition-colors">Outdoor Clothing</Link></li>
-              {/* <li><Link to="/products/category/cooking" className="text-background/80 hover:text-accent transition-colors">Cooking Gear</Link></li> */}
-              {/* <li><Link to="/products/category/lighting" className="text-background/80 hover:text-accent transition-colors">Lighting & Tools</Link></li> */}
+              <li><Link to="/products" className="text-background/80 hover:text-accent transition-colors">Backpacks & Bags</Link></li>
+              <li><Link to="/products" className="text-background/80 hover:text-accent transition-colors">Tents & Shelters</Link></li>
+              <li><Link to="/products" className="text-background/80 hover:text-accent transition-colors">Camp Furniture</Link></li>
             </ul>
           </div>
 
@@ -70,13 +65,10 @@ function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4 text-secondary">Support</h3>
             <ul className="space-y-2">
-              <li><Link to="/contact" className="text-background/80 hover:text-accent transition-colors">Contact Us</Link></li>
+              <li className="text-background/80 hover:text-accent transition-colors">Contact Us</li>
               <li><Link to="/faq" className="text-background/80 hover:text-accent transition-colors">FAQ</Link></li>
-              <li><Link to="/shipping" className="text-background/80 hover:text-accent transition-colors">Shipping Info</Link></li>
-              {/* <li><Link to="/returns" className="text-background/80 hover:text-accent transition-colors">Returns & Exchanges</Link></li> */}
-              {/* <li><Link to="/warranty" className="text-background/80 hover:text-accent transition-colors">Warranty</Link></li> */}
-              <li><Link to="/size-guide" className="text-background/80 hover:text-accent transition-colors">Size Guide</Link></li>
-              {/* <li><Link to="/repair" className="text-background/80 hover:text-accent transition-colors">Gear Repair</Link></li> */}
+              <li><Link to="/orders" className="text-background/80 hover:text-accent transition-colors">Orders</Link></li>
+              <li className="text-background/80 hover:text-accent transition-colors">Size Guide</li>
             </ul>
           </div>
 
@@ -138,13 +130,11 @@ function Footer() {
               © {new Date().getFullYear()} Voyagear. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
-              <Link to="/privacy" className="text-background/60 hover:text-accent transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="text-background/60 hover:text-accent transition-colors">
-                Terms of Service
-              </Link>
-              
+               <p className="text-background/60 hover:text-accent transition-colors"> Privacy Policy
+                </p>
+                <p className="text-background/60 hover:text-accent transition-colors">
+                Terms of Service 
+                </p>
             </div>
           </div>
           <p className="text-center text-background/50 text-xs mt-4">

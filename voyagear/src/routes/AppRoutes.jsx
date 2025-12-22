@@ -15,6 +15,7 @@ import Orders from '../pages/orders/Orders'
 import { WishlistProvider } from '../context/WishlistContext'
 import Wishlist from '../pages/wishlist/Wishlist'
 import About from '../pages/about/About'
+import PageNotFound from '../pages/notfound/PageNotFound'
 
 
 function AppRoutes() {
@@ -33,6 +34,7 @@ function AppRoutes() {
                 <Route path='/checkout' element={<Payment />} />
                 <Route path='/orders' element={<Orders />} />
                 <Route path='/about' element={<About />} />
+                <Route path='*' element={<PageNotFound/>}/>
               </Route>
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />

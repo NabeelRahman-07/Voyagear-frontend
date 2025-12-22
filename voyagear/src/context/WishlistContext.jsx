@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 import { AuthContext } from "./AuthContext";
 import { saveUser } from "../components/common/StorageService";
+import { toast } from "react-toastify";
 
 const WishlistContext = createContext();
 
@@ -9,7 +10,6 @@ export function WishlistProvider({ children }) {
   const { user, setUser } = useContext(AuthContext);
   const [wishlist, setWishlist] = useState([]);
 
-  /* ---------- LOAD WISHLIST FROM USER ---------- */
   useEffect(() => {
     if (user?.wishlist) {
       setWishlist(user.wishlist);
@@ -18,7 +18,6 @@ export function WishlistProvider({ children }) {
     }
   }, [user]);
 
-  /* ---------- ADD TO WISHLIST ---------- */
   const addToWishlist = async (product) => {
     if (!user) return;
 
@@ -39,18 +38,19 @@ export function WishlistProvider({ children }) {
     ];
 
     await updateWishlist(updatedWishlist);
+    toast.success("Item added to the wishlist.");
   };
 
-  /* ---------- REMOVE FROM WISHLIST ---------- */
   const removeFromWishlist = async (productId) => {
     const updatedWishlist = wishlist.filter(
       item => item.productId !== productId
+      
     );
 
     await updateWishlist(updatedWishlist);
+    toast.success("Item removed from wishlist.");
   };
 
-  /* ---------- TOGGLE WISHLIST ---------- */
   const toggleWishlist = async (product) => {
     const exists = wishlist.some(
       item => item.productId === product.id
@@ -63,12 +63,10 @@ export function WishlistProvider({ children }) {
     }
   };
 
-  /* ---------- CHECK IF IN WISHLIST ---------- */
   const isInWishlist = (productId) => {
     return wishlist.some(item => item.productId === productId);
   };
 
-  /* ---------- UPDATE USER + STATE ---------- */
   const updateWishlist = async (updatedWishlist) => {
     setWishlist(updatedWishlist);
 

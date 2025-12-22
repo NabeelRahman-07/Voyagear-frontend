@@ -10,11 +10,9 @@ export function PaymentProvider({ children }) {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
 
-  /* ---------- CALCULATE TOTAL ---------- */
   const calculateTotal = (items = []) =>
     items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  /* ---------- PLACE ORDER ---------- */
   const placeOrder = async (items, paymentMethod = "COD", address = {}) => {
     if (!user || !items || items.length === 0) {
       throw new Error("No items to place order");
@@ -43,7 +41,7 @@ export function PaymentProvider({ children }) {
       const updatedUser = {
         ...user,
         orders: [...(user.orders || []), newOrder],
-        cart: [], // clear cart after payment
+        cart: []
       };
 
       await api.put(`/users/${user.id}`, updatedUser);
@@ -53,7 +51,6 @@ export function PaymentProvider({ children }) {
 
       return newOrder;
     } catch (err) {
-      console.error("PAYMENT ERROR:", err);
       setPaymentError("Payment failed. Try again.");
       throw err;
     } finally {
@@ -61,14 +58,11 @@ export function PaymentProvider({ children }) {
     }
   };
 
-  /* ---------- GET ORDER HISTORY ---------- */
   const getOrderHistory = () => user?.orders || [];
 
-  /* ---------- GET ORDER BY ID ---------- */
   const getOrderById = (orderId) =>
     user?.orders?.find(o => o.orderId === orderId) || null;
 
-  /* ---------- CLEAR ERROR ---------- */
   const clearError = () => setPaymentError(null);
 
   return (

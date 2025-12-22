@@ -79,25 +79,6 @@ function Navbar() {
         ))}
       </div>
 
-      {/* Search Bar */}
-      {/* <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-        <form onSubmit={handleSearch} className="relative w-full">
-          <input
-            type="text"
-            placeholder="Search travel gear..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2 pl-12 rounded-full border border-secondary/30 focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary transition-all duration-300"
-          />
-          <button
-            type="submit"
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-accent transition-colors"
-          >
-            <FaSearch />
-          </button>
-        </form>
-      </div> */}
-
       {/* Actions */}
       <div className="flex items-center gap-6">
         {/* Wishlist with original icon */}
@@ -108,6 +89,11 @@ function Navbar() {
             title="Wishlist"
           >
             <FaHeart className="text-xl" />
+            {user?.wishlist?.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                {user.wishlist.length}
+              </span>
+            )}
           </Link>
           <div className="absolute -bottom-9 right-0 bg-primary text-background px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm shadow-lg pointer-events-none">
             Wishlist
@@ -175,14 +161,6 @@ function Navbar() {
 
                 {/* Menu Items */}
                 <div className="py-2">
-                  {/* <Link
-                    to="/profile"
-                    className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-secondary/10 transition-colors duration-200"
-                    onClick={() => setIsProfileOpen(false)}
-                  >
-                    <FaUser className="text-gray-500" />
-                    <span>Profile</span>
-                  </Link> */}
                   <Link
                     to="/orders"
                     className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-secondary/10 transition-colors duration-200"
@@ -191,14 +169,6 @@ function Navbar() {
                     <FaBox className="text-gray-500" />
                     <span>My Orders</span>
                   </Link>
-                  {/* <Link
-                    to="/settings"
-                    className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-secondary/10 transition-colors duration-200"
-                    onClick={() => setIsProfileOpen(false)}
-                  >
-                    <FaCog className="text-gray-500" />
-                    <span>Settings</span>
-                  </Link> */}
                 </div>
 
                 {/* Logout Button */}

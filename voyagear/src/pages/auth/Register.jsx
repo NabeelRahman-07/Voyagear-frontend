@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Register() {
               resetForm();
               navigate("/", { replace: true });
             } catch (err) {
-              setError(err.message);
+              toast.error("User already exist!")
             } finally {
               setSubmitting(false);
             }
@@ -147,12 +148,12 @@ function Register() {
                   )}
                 </div>
 
-                {/* Error Message */}
+                {/* Error Message
                 {error && (
                   <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-sm text-red-600 text-center">{error}</p>
                   </div>
-                )}
+                )} */}
               </div>
 
               {/* Password Requirements

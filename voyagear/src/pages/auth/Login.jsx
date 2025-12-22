@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
 import * as yup from 'yup'
 import { Formik } from 'formik';
+import { toast } from 'react-toastify';
 
 function Login() {
     const navigate = useNavigate();
@@ -35,12 +36,12 @@ function Login() {
                     validationSchema={signin}
                     onSubmit={async (values, { resetForm, setSubmitting }) => {
                         try {
-                            await login(values.email, values.password);
+                            await login(values.email, values.password);  
                             resetForm();
                             navigate("/", { replace: true });
                         } catch (err) {
                             resetForm();
-                            alert("Error: " + err.message);
+                            toast.error(err.message)
                         } finally {
                             setSubmitting(false);
                         }

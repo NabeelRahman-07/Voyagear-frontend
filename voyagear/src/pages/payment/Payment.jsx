@@ -9,6 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 // Icons for payment methods
 import { FaCreditCard, FaMobileAlt, FaMoneyBillWave, FaLock, FaTruck } from 'react-icons/fa';
 import { SiVisa, SiMastercard, SiGooglepay, SiPhonepe, SiPaytm } from 'react-icons/si';
+import { toast } from 'react-toastify';
 
 function Payment() {
   const { cart } = useCart();
@@ -93,11 +94,11 @@ function Payment() {
 
       const order = await placeOrder(items,paymentMethod, address);
       if (order) {
-        alert(`✅ Order placed successfully!\nOrder ID: ${order.orderId}\nAmount: ₹${total}`);
+        toast.success(`Order placed successfully! \n Order ID: ${order.orderId}\nAmount: ₹${total}`);
         navigate('/orders');
       }
     } catch (error) {
-      console.error('Payment failed:', error);
+      toast.error(error.message);
     } finally {
       setSubmitting(false);
     }

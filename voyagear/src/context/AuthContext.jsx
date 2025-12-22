@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import api from "../api/axiosInstance";
 import { getUser, removeUser, saveUser } from "../components/common/StorageService";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -28,6 +29,7 @@ export function AuthProvider({ children }) {
 
         setUser(res.data);
         saveUser(res.data);
+        toast.success("Account created successfully");
     }
 
     async function login(email, password) {
@@ -46,15 +48,17 @@ export function AuthProvider({ children }) {
 
         setUser(foundUser)
         saveUser(foundUser);
+        toast.success("Account logged in.")
     }
 
     function logout() {
         setUser(null)
         removeUser();
+        toast.success("Account logged out!")
     }
 
     return (
-        <AuthContext.Provider value={{ user,setUser, register, login, logout }}>
+        <AuthContext.Provider value={{ user, setUser, register, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
