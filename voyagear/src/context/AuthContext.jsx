@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect} from "react";
 import api from "../api/axiosInstance";
 import { getUser, removeUser, saveUser } from "../components/common/StorageService";
 import { toast } from "react-toastify";
@@ -48,14 +48,32 @@ export function AuthProvider({ children }) {
 
         setUser(foundUser)
         saveUser(foundUser);
-        toast.success("Account logged in.")
+        toast.success("User logged in succesfully.")
     }
 
     function logout() {
         setUser(null)
         removeUser();
-        toast.success("Account logged out!")
+        toast.success("User logged out!")
     }
+
+    useEffect(() => {
+  const handleStorageChange = (event) => {
+    if (event.key === "user") {
+      if (event.newValue) {
+        setUser(JSON.parse(event.newValue));
+      } else {
+        setUser(null); 
+      }
+    }
+  };
+
+  window.addEventListener("storage", handleStorageChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorageChange);
+  };
+}, []);
 
     return (
         <AuthContext.Provider value={{ user, setUser, register, login, logout }}>

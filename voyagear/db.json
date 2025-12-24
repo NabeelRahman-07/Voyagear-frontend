@@ -27,7 +27,20 @@
       "role": "User",
       "isBlock": false,
       "cart": [],
-      "wishlist": [],
+      "wishlist": [
+        {
+          "productId": "4",
+          "name": "Emmi-Exploit Backpack",
+          "price": 2299,
+          "image": "https://static.wixstatic.com/media/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg/v1/fill/w_507,h_507,al_c,q_85,usm_0.66_1.00_0.01/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg"
+        },
+        {
+          "productId": "1",
+          "name": "American Tourister-Aston Backpack",
+          "price": 4999,
+          "image": "https://americantourister.in/cdn/shop/files/GT0099006_1_2048x2048.jpg?v=1745324574"
+        }
+      ],
       "orders": [
         {
           "orderId": "ORD_1766223829705_FY5UN",
@@ -302,6 +315,39 @@
           "createdAt": "2025-12-22T10:33:09.079Z"
         }
       ]
+    },
+    {
+      "id": "dc98",
+      "name": " shabeer",
+      "email": "shabeer@gmail.com",
+      "password": "87654321",
+      "role": "User",
+      "isBlock": false,
+      "cart": [
+        {
+          "productId": "2",
+          "name": "American Tourister-Magna Pace Backpack",
+          "price": 3999,
+          "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591",
+          "quantity": 2
+        },
+        {
+          "productId": "3",
+          "name": "American Tourister-Yeti Backpack",
+          "price": 4599,
+          "image": "https://americantourister.in/cdn/shop/files/AMTYETIPRO60LTRSBLACKLEFT451467copy_2048x2048.jpg?v=1746608013",
+          "quantity": 1
+        }
+      ],
+      "wishlist": [
+        {
+          "productId": "2",
+          "name": "American Tourister-Magna Pace Backpack",
+          "price": 3999,
+          "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591"
+        }
+      ],
+      "orders": []
     }
   ],
   "products": [
@@ -460,7 +506,7 @@
       "name": "Coleman Compact Roll-Top Aluminum Table",
       "category": "Furniture",
       "description": "Lightweight and portable camping table with a roll-top aluminum design, ideal for outdoor cooking, dining, and campsite organization.",
-      "stock": 20,
+      "quantity": 20,
       "price": 5999,
       "original price": 6699,
       "image": "https://newellbrands.imgix.net/3e9128c5-26f9-3070-a379-d40ad316e42e/3e9128c5-26f9-3070-a379-d40ad316e42e.jpeg?auto=format,compress&w=1024"

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaBolt, FaArrowLeft, FaHeart, FaTruck, FaShieldAlt, FaUndo } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
 import { useCart } from '../../context/CartContext';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/AuthContext';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -12,6 +14,7 @@ function ProductDetails() {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const {user}=useContext(AuthContext);
 
   // Fetch product details
   useEffect(() => {
@@ -30,22 +33,27 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
-  // Handle quantity change
   const handleQuantityChange = (value) => {
     if (value < 1) return;
     setQuantity(value);
   };
 
-  // Handle add to cart
   const handleAddToCart = () => {
+    if(!user){
+      toast.error("Please login to add product to cart")
+      return;
+    }
     addToCart(product);
-    // Implement cart logic
   };
 
-  // Handle buy now
   const handleBuyNow = () => {
     navigate('/checkout',{state:{product,quantity}});
   };
+
+  // let count=0;
+  // for(let i of user?.cart){
+  //   i.productId==id ? count+=1:count
+  // }
 
   if (loading) {
     return (
@@ -75,7 +83,6 @@ function ProductDetails() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Back Button */}
       <div className="max-w-7xl mx-auto px-4 py-6">
         <button
           onClick={() => navigate('/products')}
@@ -89,7 +96,6 @@ function ProductDetails() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-            {/* Left Side - Images */}
             <div>
               {/* Main Image */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
@@ -101,17 +107,14 @@ function ProductDetails() {
               </div>
             </div>
 
-            {/* Right Side - Product Info */}
+            {/*  Product Info */}
             <div className="space-y-6">
-              {/* Brand and Name */}
               <div>
-                {/* <span className="text-sm text-gray-500 uppercase tracking-wider">Brand</span> */}
                 <h1 className="text-3xl font-bold text-gray-900 mt-1">{product.name}</h1>
               </div>
 
               {/* Category */}
               <div className="flex items-center gap-2">
-                {/* <span className="text-gray-500">Category:</span> */}
                 <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
                   {product.category}
                 </span>
@@ -165,14 +168,34 @@ function ProductDetails() {
                   >
                     +
                   </button>
-                  <span className="text-sm text-gray-500">
-                    {product.quantity && `${product.quantity} units available`}
-                  </span>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                {/* {count ?(<button
+                  onClick={()=>navigate('/cart')}
+                  disabled={!product.quantity}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
+                    ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
+                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    }`}
+                >
+                  <FaShoppingCart />
+                  go to Cart
+                </button>)
+                :
+                (<button
+                  onClick={handleAddToCart}
+                  disabled={!product.quantity}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
+                    ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
+                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    }`}
+                >
+                  <FaShoppingCart />
+                  Add to Cart
+                </button>) } */}
                 <button
                   onClick={handleAddToCart}
                   disabled={!product.quantity}

@@ -21,7 +21,6 @@ function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-primary/5 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-secondary/20">
-                {/* Header */}
                 <div className="text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-primary">
                         Welcome Back
@@ -50,7 +49,7 @@ function Login() {
                     {(formik) => (
                         <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
                             <div className="space-y-5">
-                                {/* Email Input */}
+                                {/* Email */}
                                 <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-primary mb-1">
                                         Email Address
@@ -74,7 +73,7 @@ function Login() {
                                     )}
                                 </div>
 
-                                {/* Password Input */}
+                                {/* Password*/}
                                 <div>
                                     <div className="flex items-center justify-between mb-1">
                                         <label htmlFor="password" className="block text-sm font-medium text-primary">
@@ -101,7 +100,7 @@ function Login() {
                                 </div>
                             </div>
 
-                            {/* Submit Button */}
+                            {/* Submit*/}
                             <button
                                 type="submit"
                                 disabled={formik.isSubmitting}
@@ -133,7 +132,6 @@ function Login() {
                                 )}
                             </button>
 
-                            {/* Divider */}
                             <div className="relative">
                                 <div className="absolute inset-0 flex items-center">
                                     <div className="w-full border-t border-gray-300"></div>
@@ -143,7 +141,7 @@ function Login() {
                                 </div>
                             </div>
 
-                            {/* Sign Up Link */}
+                            {/* Sign Up*/}
                             <div className="text-center mt-6">
                                 <p className="text-sm text-gray-600">
                                     New here?{' '}

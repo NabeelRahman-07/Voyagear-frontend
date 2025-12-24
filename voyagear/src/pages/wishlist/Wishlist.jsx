@@ -1,4 +1,5 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaShoppingCart } from 'react-icons/fa';
 import { useWishlist } from '../../context/WishlistContext';
@@ -8,7 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 function Wishlist() {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleMoveToCart = (item) => {
     addToCart({
@@ -22,15 +23,16 @@ function Wishlist() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-bold mb-4">Please Login</h2>
-          <p className="text-gray-600 mb-6">Login to view wishlist</p>
+          <div className="text-6xl mb-4">❤️</div>
+          <h2 className="text-2xl font-bold mb-4">Please Login</h2>
+          <p className="text-gray-600 mb-6">You need to be logged in to view your wishlist</p>
           <Link
             to="/login"
-            className="bg-secondary text-white px-4 py-2 rounded hover:bg-accent"
+            className="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-accent transition-colors"
           >
-            Login
+            Login to Continue
           </Link>
         </div>
       </div>
@@ -78,8 +80,7 @@ function Wishlist() {
                 <div className="p-4">
                   <h3 className="font-bold mb-1">{item.name}</h3>
                   <p className="text-xl font-bold text-primary mb-4">₹{item.price}</p>
-                  
-                  {/* Actions */}
+
                   <div className="flex gap-2">
                     <button
                       onClick={() => removeFromWishlist(item.productId)}

@@ -9,12 +9,10 @@ function Cart() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Calculate totals
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   const shipping = subtotal > 1999 ? 0 : 99;
   const total = subtotal + shipping;
 
-  // Handle quantity change
   const handleQuantityChange = (productId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(productId);
@@ -23,13 +21,11 @@ function Cart() {
     }
   };
 
-  // Handle checkout
   const handleCheckout = () => {
     if (cart.length === 0) return;
     navigate('/checkout');
   };
 
-  // Handle continue shopping
   const handleContinueShopping = () => {
     navigate('/products');
   };
@@ -176,7 +172,7 @@ function Cart() {
               <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
                 <h3 className="text-xl font-bold mb-6 pb-4 border-b">Order Summary</h3>
 
-                {/* Price Breakdown */}
+                {/* Price-expanded */}
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
@@ -198,7 +194,7 @@ function Cart() {
                   </div>
                 </div>
 
-                {/* Shipping Info */}
+                {/* Shipping*/}
                 {subtotal < 2000 && (
                   <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p className="text-sm text-yellow-800">
@@ -207,7 +203,6 @@ function Cart() {
                   </div>
                 )}
 
-                {/* Checkout Button */}
                 <button
                   onClick={handleCheckout}
                   className="w-full bg-secondary text-white py-3 rounded-lg font-bold text-lg hover:bg-accent transition-colors mb-4"
@@ -215,7 +210,6 @@ function Cart() {
                   Proceed to Checkout
                 </button>
 
-                {/* Continue Shopping */}
                 <button
                   onClick={handleContinueShopping}
                   className="w-full flex items-center justify-center gap-2 border-2 border-secondary text-secondary py-3 rounded-lg font-medium hover:bg-secondary hover:text-white transition-colors"
@@ -224,7 +218,6 @@ function Cart() {
                   Continue Shopping
                 </button>
 
-                {/* Additional Info */}
                 <div className="mt-6 pt-6 border-t text-sm text-gray-500 space-y-2">
                   <p>✓ Free shipping on orders above ₹1999</p>
                   <p>✓ 30-day return policy</p>

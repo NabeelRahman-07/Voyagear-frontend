@@ -13,6 +13,7 @@ function Register() {
   const registration = yup.object({
     name: yup
       .string()
+      .matches(/^[a-zA-Z]+$/,'Invalid Name')
       .min(3, "Name must contain at least 3 characters")
       .required("Name is required"),
 
@@ -147,51 +148,9 @@ function Register() {
                     <p className="mt-1 text-sm text-red-500 animate-pulse">{formik.errors.confirmPassword}</p>
                   )}
                 </div>
-
-                {/* Error Message
-                {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm text-red-600 text-center">{error}</p>
-                  </div>
-                )} */}
               </div>
 
-              {/* Password Requirements
-              <div className="bg-primary/5 p-4 rounded-lg border border-secondary/10">
-                <p className="text-sm font-medium text-primary mb-2">Password must contain:</p>
-                <ul className="text-xs text-gray-600 space-y-1">
-                  <li className="flex items-center">
-                    <span className={`w-2 h-2 rounded-full mr-2 ${formik.values.password.length >= 8 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                    At least 8 characters
-                  </li>
-                  <li className="flex items-center">
-                    <span className={`w-2 h-2 rounded-full mr-2 ${/[A-Z]/.test(formik.values.password) ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                    One uppercase letter
-                  </li>
-                  <li className="flex items-center">
-                    <span className={`w-2 h-2 rounded-full mr-2 ${/[a-z]/.test(formik.values.password) ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                    One lowercase letter
-                  </li>
-                </ul>
-              </div> */}
-
-              {/* Terms and Conditions
-              <div className="flex items-center">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  className="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded"
-                />
-                <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                  I agree to the{" "}
-                  <Link to="/terms" className="font-medium text-secondary hover:text-accent">
-                    Terms & Conditions
-                  </Link>
-                </label>
-              </div> */}
-
-              {/* Submit Button */}
+              {/* Submit */}
               <button
                 type="submit"
                 disabled={formik.isSubmitting}

@@ -29,7 +29,7 @@ function Payment() {
 
   // Validation schema
   const validationSchema = Yup.object({
-    name: Yup.string().required('Full name is required'),
+    name: Yup.string().matches(/^[a-zA-Z]+$/).required('Full name is required'),
     phone: Yup.string()
       .matches(/^[0-9]{10}$/, 'Phone must be 10 digits')
       .required('Phone number is required'),
@@ -150,9 +150,8 @@ function Payment() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Left Column - Forms */}
           <div className="space-y-8">
-            {/* Shipping Address Card */}
+            {/* Address Card */}
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <div className="flex items-center gap-3 mb-6">
                 <FaTruck className="text-2xl text-secondary" />
@@ -166,7 +165,6 @@ function Payment() {
               >
                 {({ errors, touched, isSubmitting, setFieldValue }) => (
                   <Form className="space-y-6">
-                    {/* Address Form Fields */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Full Name *
@@ -247,7 +245,7 @@ function Payment() {
                       </div>
                     </div>
 
-                    {/* Payment Method Card */}
+                    {/* Payment Method  */}
                     <div className="pt-8 border-t">
                       <div className="flex items-center gap-3 mb-6">
                         <FaLock className="text-2xl text-secondary" />
@@ -255,7 +253,6 @@ function Payment() {
                       </div>
 
                       <div className="grid grid-cols-1 gap-4">
-                        {/* COD Option */}
                         <label className={`flex items-center p-5 border-2 rounded-xl cursor-pointer transition-all ${paymentMethod === 'COD' ? 'border-secondary bg-secondary/5' : 'border-gray-200 hover:border-gray-300'}`}>
                           <input
                             type="radio"
@@ -274,7 +271,6 @@ function Payment() {
                           </div>
                         </label>
 
-                        {/* UPI Option */}
                         <label className={`flex items-center p-5 border-2 rounded-xl cursor-pointer transition-all ${paymentMethod === 'UPI' ? 'border-secondary bg-secondary/5' : 'border-gray-200 hover:border-gray-300'}`}>
                           <input
                             type="radio"
@@ -310,7 +306,6 @@ function Payment() {
                           </div>
                         </label>
 
-                        {/* Credit Card Option */}
                         <label className={`flex items-center p-5 border-2 rounded-xl cursor-pointer transition-all ${paymentMethod === 'CreditCard' ? 'border-secondary bg-secondary/5' : 'border-gray-200 hover:border-gray-300'}`}>
                           <input
                             type="radio"
@@ -371,7 +366,6 @@ function Payment() {
                       </div>
                     </div>
 
-                    {/* Submit Button */}
                     <button
                       type="submit"
                       disabled={isSubmitting || paymentLoading}
@@ -402,12 +396,11 @@ function Payment() {
             </div>
           </div>
 
-          {/* Right Column - Order Summary */}
+          {/* Order Summary */}
           <div>
             <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Order Summary</h2>
               
-              {/* Cart Items */}
               <div className="mb-8 max-h-80 overflow-y-auto pr-2">
                 {items.map(item => (
                   <div key={item.productId} className="flex items-center gap-4 p-3 mb-3 bg-gray-50 rounded-xl">
@@ -427,7 +420,7 @@ function Payment() {
                 ))}
               </div>
 
-              {/* Price Breakdown */}
+              {/* Price-expanded */}
               <div className="space-y-4 border-t pt-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
@@ -435,21 +428,17 @@ function Payment() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="text-green-600 font-bold">FREE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Tax (18%)</span>
-                  <span className="font-bold">₹{(total * 0.18).toFixed(0)}</span>
+                  <span className="text-green-600 font-bold">{total>1999?"Free":99}</span>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between text-xl font-bold">
                     <span>Total Amount</span>
-                    <span className="text-primary">₹{total}</span>
+                    <span className="text-primary">₹{total>1999?total:(total+99)}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Security Guarantee */}
+              {/* buying features */}
               <div className="mt-8 p-4 bg-green-50 rounded-xl">
                 <div className="flex items-center gap-3">
                   <FaLock className="text-green-600" />
@@ -460,7 +449,6 @@ function Payment() {
                 </div>
               </div>
 
-              {/* Return Policy */}
               <div className="mt-6 p-4 bg-blue-50 rounded-xl">
                 <p className="text-sm text-blue-800">
                   ✅ 30-day return policy • ✅ Free shipping • ✅ 24/7 support

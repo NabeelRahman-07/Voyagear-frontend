@@ -2,35 +2,29 @@ import React, { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import logo from '../../assets/logo.png'
-import { FaHeart, FaSearch, FaShoppingCart, FaUser, FaBox, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaUser, FaBox, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery);
-      navigate(`/search?q=${searchQuery}`);
-    }
-  };
+  const cartQuantity = user?.cart.reduce((sum, item) => (sum += item.quantity), 0)
+
 
   return (
     <nav className="h-[80px] bg-background flex items-center justify-between px-6 md:px-10 opacity-95 sticky top-0 z-50 shadow-lg border-b border-gray-100">
-      
+
       {/* Logo Section */}
       <Link to="/" className="flex items-center gap-3 group">
         <div className="w-10 h-10 flex items-center justify-center">
-          <img 
-            src={logo} 
-            alt="Voyagear Logo" 
+          <img
+            src={logo}
+            alt="Voyagear Logo"
             className="w-full h-full object-contain rounded-3xl group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        
+
         <div className="flex flex-col">
           <span className="text-primary text-2xl font-bold tracking-wide">
             Voyagear
@@ -53,10 +47,9 @@ function Navbar() {
               to={item.path}
               end={item.path === "/"}
               className={({ isActive }) =>
-                `text-primary text-base font-medium transition-all duration-300 ${
-                  isActive
-                    ? "text-secondary font-bold"
-                    : "hover:text-accent"
+                `text-primary text-base font-medium transition-all duration-300 ${isActive
+                  ? "text-secondary font-bold"
+                  : "hover:text-accent"
                 }`
               }
             >
@@ -68,8 +61,7 @@ function Navbar() {
               to={item.path}
               end={item.path === "/"}
               className={({ isActive }) =>
-                `absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
-                  isActive ? "w-full bg-secondary" : "w-0"
+                `absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${isActive ? "w-full bg-secondary" : "w-0"
                 }`
               }
             >
@@ -111,7 +103,7 @@ function Navbar() {
             {/* Cart Counter Badge */}
             {user?.cart?.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                {user.cart.length}
+                {cartQuantity}
               </span>
             )}
           </Link>
@@ -140,10 +132,10 @@ function Navbar() {
               <span className="text-primary font-medium hidden lg:block">
                 {user.name || user.email.split("@")[0]}
               </span>
-              <svg 
+              <svg
                 className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${isProfileOpen ? 'rotate-180' : ''}`}
-                fill="none" 
-                stroke="currentColor" 
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

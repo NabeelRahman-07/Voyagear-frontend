@@ -4,21 +4,22 @@ import { FaShoppingCart, FaHeart } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
-  
-  // Filters
+  const { user } = useContext(AuthContext);
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -33,8 +34,7 @@ function Products() {
     };
     fetchProducts();
   }, []);
-
-  // Get all unique categories from products
+  // to get unique categories
   const categories = ['all', ...new Set(products.map(p => p.category))];
 
   // Filter and sort products
@@ -78,7 +78,6 @@ function Products() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <div className="bg-primary text-white py-8">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-3xl font-bold mb-2">Travel Products</h1>
@@ -87,26 +86,23 @@ function Products() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Top Filters */}
         <div className="mb-8 space-y-4">
-          {/* Category Filters */}
           <div className="flex flex-wrap gap-2">
             {categories.map(category => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded ${
-                  selectedCategory === category
-                    ? 'bg-secondary text-white'
-                    : 'bg-gray-100 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded ${selectedCategory === category
+                  ? 'bg-secondary text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
               >
                 {category === 'all' ? 'All Products' : category}
               </button>
             ))}
           </div>
 
-          {/* Search and Sort */}
+          {/* Search and sort */}
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
@@ -128,13 +124,13 @@ function Products() {
           </div>
         </div>
 
-        {/* Results Info */}
+        {/* Results info */}
         <p className="text-gray-600 mb-6">
           {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
           {selectedCategory !== 'all' && ` in ${selectedCategory}`}
         </p>
 
-        {/* Products Grid */}
+        {/* Products grid */}
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12 bg-white rounded shadow">
             <div className="text-4xl mb-4">🧭</div>
@@ -145,13 +141,19 @@ function Products() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map(product => (
               <div key={product.id} className="bg-white rounded shadow overflow-hidden flex flex-col hover:shadow-lg transition-shadow relative group">
-                {/* Wishlist Heart Icon */}
+                {/* Wishlist heart */}
                 <button
-                  onClick={() => toggleWishlist(product)}
+                  onClick={() => {
+                      if (!user) {
+                        toast.error("Please login to add product to wishlist.")
+                        return;
+                      }
+                      toggleWishlist(product)
+                    }}
                   className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
                 >
-                  <FaHeart 
-                    className={`text-lg ${isInWishlist(product.id) ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} 
+                  <FaHeart
+                    className={`text-lg ${isInWishlist(product.id) ? 'text-red-500 fill-red-500' : 'text-gray-400'}`}
                   />
                 </button>
 
@@ -162,7 +164,7 @@ function Products() {
                       src={product.image}
                       alt={product.name}
                       className="max-h-full max-w-full object-scale-down hover:scale-105 transition-transform duration-300"
-                      style={{ 
+                      style={{
                         maxHeight: '180px',
                         maxWidth: '90%',
                         width: 'auto',
@@ -183,7 +185,7 @@ function Products() {
                     <h3 className="font-bold hover:text-secondary text-lg mb-1">{product.name}</h3>
                   </Link>
                   <p className="text-gray-500 text-sm mb-2">{product.category}</p>
-                  
+
                   {/* Price */}
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xl font-bold text-primary">
@@ -203,15 +205,20 @@ function Products() {
                     </span>
                   </div>
 
-                  {/* Add to Cart Button Only */}
+                  {/* Add to Cart */}
                   <button
-                    onClick={() => addToCart(product)}
+                    onClick={() => {
+                      if (!user) {
+                        toast.error("Please login to add product to cart.")
+                        return;
+                      }
+                      addToCart(product)
+                    }}
                     disabled={!product.quantity}
-                    className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded font-medium ${
-                      product.quantity
-                        ? 'bg-secondary text-white hover:bg-accent transition-colors'
-                        : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    }`}
+                    className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded font-medium ${product.quantity
+                      ? 'bg-secondary text-white hover:bg-accent transition-colors'
+                      : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      }`}
                   >
                     <FaShoppingCart />
                     Add to Cart

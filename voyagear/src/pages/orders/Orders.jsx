@@ -1,10 +1,11 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBox, FaCheckCircle, FaShippingFast, FaHome, FaCalendarAlt } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 
 function Orders() {
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   if (!user) {
     return (
