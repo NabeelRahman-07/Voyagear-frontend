@@ -9,7 +9,7 @@ function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
 
-  const cartQuantity = user?.cart.reduce((sum, item) => (sum += item.quantity), 0)
+  const cartQuantity = user?.cart?.reduce((sum, item) => (sum += item.quantity), 0)
 
 
   return (
@@ -78,7 +78,6 @@ function Navbar() {
           <Link
             to="/wishlist"
             className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-red-500 transition-colors"
-            title="Wishlist"
           >
             <FaHeart className="text-xl" />
             {user?.wishlist?.length > 0 && (
@@ -97,7 +96,6 @@ function Navbar() {
           <Link
             to="/cart"
             className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-secondary transition-colors"
-            title="Cart"
           >
             <FaShoppingCart className="text-xl" />
             {/* Cart Counter Badge */}
@@ -108,7 +106,7 @@ function Navbar() {
             )}
           </Link>
           <div className="absolute -bottom-9 right-0 bg-primary text-background px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm shadow-lg pointer-events-none">
-            Cart {user?.cart?.length > 0 && `(${user.cart.length})`}
+            Cart
           </div>
         </div>
 

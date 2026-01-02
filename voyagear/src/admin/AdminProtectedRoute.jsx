@@ -1,0 +1,16 @@
+import React, { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
+import { Navigate, Outlet } from 'react-router-dom';
+
+function AdminProtectedRoute() {
+  const {user}=useContext(AuthContext);
+  if(!user){
+    return <Navigate to="/login" replace/>;
+  }
+  if(user.role !== "Admin"){
+    return <Navigate to='/' replace/>
+  }
+  return <Outlet/>
+}
+
+export default AdminProtectedRoute

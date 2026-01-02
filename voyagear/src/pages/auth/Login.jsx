@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
 import * as yup from 'yup'
@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 function Login() {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { user,login } = useContext(AuthContext);
 
     const signin = yup.object({
         email: yup.string()
@@ -17,6 +17,14 @@ function Login() {
             .min(8, "Password must contain at least 8 characters")
             .required("Password is required")
     });
+
+    useEffect(()=>{
+        if(user){
+            if(user.role=="Admin"){
+                navigate("/admin",{replace:true});
+            }else{navigate("/", {replace:true})}
+        }
+    },[user,navigate])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-primary/5 py-12 px-4 sm:px-6 lg:px-8">
@@ -37,7 +45,6 @@ function Login() {
                         try {
                             await login(values.email, values.password);  
                             resetForm();
-                            navigate("/", { replace: true });
                         } catch (err) {
                             resetForm();
                             toast.error(err.message)

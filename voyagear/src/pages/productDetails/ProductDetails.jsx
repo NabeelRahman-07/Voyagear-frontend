@@ -13,7 +13,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
+  const { cart,addToCart } = useCart();
   const {user}=useContext(AuthContext);
 
   // Fetch product details
@@ -43,17 +43,17 @@ function ProductDetails() {
       toast.error("Please login to add product to cart")
       return;
     }
-    addToCart(product);
+    addToCart(product,quantity);
   };
 
   const handleBuyNow = () => {
     navigate('/checkout',{state:{product,quantity}});
   };
-
-  // let count=0;
-  // for(let i of user?.cart){
-  //   i.productId==id ? count+=1:count
-  // }
+  
+  let count=0;
+  for(let i of cart){
+    i.productId==id ? count+=1 : count;
+  }
 
   if (loading) {
     return (
@@ -173,16 +173,15 @@ function ProductDetails() {
 
               {/* Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                {/* {count ?(<button
-                  onClick={()=>navigate('/cart')}
+                {count ?(<button
+                  // onClick={()=>navigate('/cart')}
                   disabled={!product.quantity}
-                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
-                    ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
-                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium 
+                    bg-gray-200 text-gray-500 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed'
                     }`}
                 >
                   <FaShoppingCart />
-                  go to Cart
+                  Item already in Cart
                 </button>)
                 :
                 (<button
@@ -195,8 +194,8 @@ function ProductDetails() {
                 >
                   <FaShoppingCart />
                   Add to Cart
-                </button>) } */}
-                <button
+                </button>) }
+                {/* <button
                   onClick={handleAddToCart}
                   disabled={!product.quantity}
                   className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
@@ -206,7 +205,7 @@ function ProductDetails() {
                 >
                   <FaShoppingCart />
                   Add to Cart
-                </button>
+                </button> */}
                 <button
                   onClick={handleBuyNow}
                   disabled={!product.quantity}

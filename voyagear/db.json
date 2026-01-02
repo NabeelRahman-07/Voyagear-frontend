@@ -1,21 +1,20 @@
 {
   "users": [
     {
+      "id": "001",
+      "name": "admin",
+      "email": "admin@voyagear.com",
+      "password": "admin123",
+      "role": "Admin"
+    },
+    {
       "id": "1095",
       "name": "Ziyad",
       "email": "ziyad@gmail.com",
       "password": "87654321",
       "role": "User",
       "isBlock": false,
-      "cart": [
-        {
-          "productId": "1",
-          "name": "American Tourister-Aston Backpack",
-          "price": 4999,
-          "image": "https://americantourister.in/cdn/shop/files/GT0099006_1_2048x2048.jpg?v=1745324574",
-          "quantity": 1
-        }
-      ],
+      "cart": [],
       "wishlist": [],
       "orders": []
     },
@@ -29,12 +28,6 @@
       "cart": [],
       "wishlist": [
         {
-          "productId": "4",
-          "name": "Emmi-Exploit Backpack",
-          "price": 2299,
-          "image": "https://static.wixstatic.com/media/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg/v1/fill/w_507,h_507,al_c,q_85,usm_0.66_1.00_0.01/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg"
-        },
-        {
           "productId": "1",
           "name": "American Tourister-Aston Backpack",
           "price": 4999,
@@ -43,62 +36,27 @@
       ],
       "orders": [
         {
-          "orderId": "ORD_1766223829705_FY5UN",
+          "orderId": "ORD_1767356517509_NYAZ8",
           "items": [
             {
-              "id": "2",
+              "productId": "2",
               "name": "American Tourister-Magna Pace Backpack",
-              "category": "Backpack",
-              "description": "Stylish and durable backpack designed for travel, daily commuting, and casual adventures, offering smart storage and long-lasting comfort.",
-              "quantity": 1,
               "price": 3999,
-              "original price": 5800,
-              "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591"
-            }
-          ],
-          "totalAmount": 3999,
-          "paymentMethod": "COD",
-          "paymentStatus": "SUCCESS",
-          "shippingAddress": {
-            "name": "Jasil",
-            "phone": "9497151592",
-            "street": "abcd house",
-            "city": "Tirur",
-            "state": "Kerala",
-            "pincode": "676503"
-          },
-          "orderStatus": "Placed",
-          "createdAt": "2025-12-20T09:43:49.705Z"
-        },
-        {
-          "orderId": "ORD_1766224205840_J1QX7",
-          "items": [
-            {
-              "productId": "5",
-              "name": "Emmi-Hazard Backpack",
-              "price": 3999,
-              "image": "https://static.wixstatic.com/media/1a7e28_191fbd92a95a48e7b70e32409a09d9de~mv2.jpg/v1/fill/w_507,h_507,al_c,q_85,usm_0.66_1.00_0.01/1a7e28_191fbd92a95a48e7b70e32409a09d9de~mv2.jpg",
+              "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591",
               "quantity": 1
             },
             {
-              "productId": "6",
-              "name": "Quechua-Hiking Backpack",
-              "price": 1499,
-              "image": "https://contents.mediadecathlon.com/p2629724/00e95e29051097a1f98510f2775ade01/p2629724.jpg",
+              "productId": "9",
+              "name": "Coleman-6 person Camping Tent",
+              "price": 10999,
+              "image": "https://newellbrands.imgix.net/a8d079b0-ee20-34b8-be76-d46a440cd435/a8d079b0-ee20-34b8-be76-d46a440cd435.jpg?auto=format,compress&w=1024",
               "quantity": 1
             },
             {
-              "productId": "4",
-              "name": "Emmi-Exploit Backpack",
-              "price": 2299,
-              "image": "https://static.wixstatic.com/media/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg/v1/fill/w_507,h_507,al_c,q_85,usm_0.66_1.00_0.01/1a7e28_efc71c2056954768ac651555c06b25bf~mv2.jpg",
-              "quantity": 1
-            },
-            {
-              "productId": "7",
-              "name": "Boldfit-Trail Max Rucksack Backpack",
-              "price": 2699,
-              "image": "https://www.boldfit.com/cdn/shop/files/Artboard1_64ed09a7-7da2-4d5f-b75b-3bb408821a37.jpg?v=1745584022&width=1500",
+              "productId": "13",
+              "name": "Quechua Folding Armchair",
+              "price": 1399,
+              "image": "https://contents.mediadecathlon.com/p1749357/19f4d314687ba308987832f305361caf/p1749357.jpg",
               "quantity": 1
             },
             {
@@ -109,103 +67,19 @@
               "quantity": 1
             }
           ],
-          "totalAmount": 15995,
+          "totalAmount": 21896,
           "paymentMethod": "COD",
           "paymentStatus": "SUCCESS",
           "shippingAddress": {
             "name": "Jasil",
-            "phone": "9497151592",
-            "street": "abcd house",
-            "city": "Tirur",
+            "phone": "9080703454",
+            "street": "abcdefg",
+            "city": "Calicut",
             "state": "Kerala",
-            "pincode": "676503"
+            "pincode": "123456"
           },
           "orderStatus": "Placed",
-          "createdAt": "2025-12-20T09:50:05.840Z"
-        },
-        {
-          "orderId": "ORD_1766397579345_9Y92F",
-          "items": [
-            {
-              "id": "8",
-              "name": "Quechua-Water repellant Hiking Backpack",
-              "category": "Backpack",
-              "description": "Water-repellent and durable hiking backpack designed for outdoor adventures, offering protection, comfort, and organized storage in changing weather conditions.",
-              "quantity": 1,
-              "price": 5499,
-              "original price": 6499,
-              "image": "https://contents.mediadecathlon.com/p2861730/964c2d4d9cb77384422644f04c9c020e/p2861730.jpg"
-            }
-          ],
-          "totalAmount": 5499,
-          "paymentMethod": "COD",
-          "paymentStatus": "SUCCESS",
-          "shippingAddress": {
-            "name": "Jasil",
-            "phone": "9497151592",
-            "street": "abcd house",
-            "city": "Kottakkal",
-            "state": "Kerala",
-            "pincode": "676503"
-          },
-          "orderStatus": "Placed",
-          "createdAt": "2025-12-22T09:59:39.345Z"
-        },
-        {
-          "orderId": "ORD_1766397785005_QPLLL",
-          "items": [
-            {
-              "id": "8",
-              "name": "Quechua-Water repellant Hiking Backpack",
-              "category": "Backpack",
-              "description": "Water-repellent and durable hiking backpack designed for outdoor adventures, offering protection, comfort, and organized storage in changing weather conditions.",
-              "quantity": 1,
-              "price": 5499,
-              "original price": 6499,
-              "image": "https://contents.mediadecathlon.com/p2861730/964c2d4d9cb77384422644f04c9c020e/p2861730.jpg"
-            }
-          ],
-          "totalAmount": 5499,
-          "paymentMethod": "COD",
-          "paymentStatus": "SUCCESS",
-          "shippingAddress": {
-            "name": "Jasil",
-            "phone": "9497151592",
-            "street": "abcd house",
-            "city": "Kottakkal",
-            "state": "Kerala",
-            "pincode": "676503"
-          },
-          "orderStatus": "Placed",
-          "createdAt": "2025-12-22T10:03:05.005Z"
-        },
-        {
-          "orderId": "ORD_1766398232766_9JE21",
-          "items": [
-            {
-              "id": "8",
-              "name": "Quechua-Water repellant Hiking Backpack",
-              "category": "Backpack",
-              "description": "Water-repellent and durable hiking backpack designed for outdoor adventures, offering protection, comfort, and organized storage in changing weather conditions.",
-              "quantity": 1,
-              "price": 5499,
-              "original price": 6499,
-              "image": "https://contents.mediadecathlon.com/p2861730/964c2d4d9cb77384422644f04c9c020e/p2861730.jpg"
-            }
-          ],
-          "totalAmount": 5499,
-          "paymentMethod": "COD",
-          "paymentStatus": "SUCCESS",
-          "shippingAddress": {
-            "name": "Jasil",
-            "phone": "9497151592",
-            "street": "abcd house",
-            "city": "Kottakkal",
-            "state": "Kerala",
-            "pincode": "676503"
-          },
-          "orderStatus": "Placed",
-          "createdAt": "2025-12-22T10:10:32.766Z"
+          "createdAt": "2026-01-02T12:21:57.509Z"
         }
       ]
     },
@@ -318,35 +192,13 @@
     },
     {
       "id": "dc98",
-      "name": " shabeer",
+      "name": "shabeer",
       "email": "shabeer@gmail.com",
       "password": "87654321",
       "role": "User",
       "isBlock": false,
-      "cart": [
-        {
-          "productId": "2",
-          "name": "American Tourister-Magna Pace Backpack",
-          "price": 3999,
-          "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591",
-          "quantity": 2
-        },
-        {
-          "productId": "3",
-          "name": "American Tourister-Yeti Backpack",
-          "price": 4599,
-          "image": "https://americantourister.in/cdn/shop/files/AMTYETIPRO60LTRSBLACKLEFT451467copy_2048x2048.jpg?v=1746608013",
-          "quantity": 1
-        }
-      ],
-      "wishlist": [
-        {
-          "productId": "2",
-          "name": "American Tourister-Magna Pace Backpack",
-          "price": 3999,
-          "image": "https://americantourister.in/cdn/shop/files/QT5009002_1_2048x2048.jpg?v=1745324591"
-        }
-      ],
+      "cart": [],
+      "wishlist": [],
       "orders": []
     }
   ],

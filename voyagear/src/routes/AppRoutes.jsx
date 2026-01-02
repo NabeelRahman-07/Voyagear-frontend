@@ -16,6 +16,13 @@ import { WishlistProvider } from '../context/WishlistContext'
 import Wishlist from '../pages/wishlist/Wishlist'
 import About from '../pages/about/About'
 import PageNotFound from '../pages/notfound/PageNotFound'
+import AdminProtectedRoute from '../admin/AdminProtectedRoute'
+import AdminLayout from '../admin/AdminLayout'
+import AdminDashboard from '../admin/pages/AdminDashboard'
+import AdminProducts from '../admin/pages/AdminProducts'
+import AdminOrders from '../admin/pages/AdminOrders'
+import AdminCustomers from '../admin/pages/AdminCustomers'
+import AdminAnalytics from '../admin/pages/AdminAnalytics'
 
 
 function AppRoutes() {
@@ -34,7 +41,16 @@ function AppRoutes() {
                 <Route path='/checkout' element={<Payment />} />
                 <Route path='/orders' element={<Orders />} />
                 <Route path='/about' element={<About />} />
-                <Route path='*' element={<PageNotFound/>}/>
+                <Route path='*' element={<PageNotFound />} />
+              </Route>
+              <Route element={<AdminProtectedRoute />}>
+                <Route path='/admin' element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path='products' element={<AdminProducts/>}/>
+                  <Route path='orders' element={<AdminOrders/>}/>
+                  <Route path='customers' element={<AdminCustomers/>}/>
+                  <Route path='analytics' element={<AdminAnalytics/>}/>
+                </Route>
               </Route>
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
