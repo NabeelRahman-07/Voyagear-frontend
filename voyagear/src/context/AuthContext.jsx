@@ -8,6 +8,27 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => getUser());
 
+  useEffect(()=>{
+    const chekUSer=async ()=>{
+      try{
+        const res=await api.get(`/users/${user.id}`);
+        const freshUser=res.data;
+
+        if(freshUser.isBlock){
+          logout();
+          toast.error("Your account has been blocked by Admin");
+        }
+      }catch(err){
+        console.log("User status check failed",err); 
+      }
+    };
+    chekUSer();
+
+    const interval = setInterval(chekUSer, 5000);
+
+  return () => clearInterval(interval);
+  },[user])
+
   async function register(name, email, password) {
     const newUser = {
       name,
@@ -15,6 +36,7 @@ export function AuthProvider({ children }) {
       password,
       role: "User",
       isBlock: false,
+      createdAt: new Date().toISOString(),
       cart: [],
       wishlist: [],
       orders: []
@@ -45,6 +67,10 @@ export function AuthProvider({ children }) {
     if (foundUser.password !== password) {
       throw new Error("Password is incorrect")
     }
+
+    if(foundUser.isBlock==true){
+      throw new Error("Your account has been blocked")
+    }
     const freshUser=await api.get(`/users/${foundUser.id}`);
 
     setUser(freshUser.data)
@@ -59,7 +85,6 @@ export function AuthProvider({ children }) {
   function logout() {
     setUser(null)
     removeUser();
-    toast.success("User logged out!")
   }
 
   useEffect(() => {

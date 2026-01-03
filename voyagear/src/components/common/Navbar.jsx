@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, replace, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import logo from '../../assets/logo.png'
 import { FaHeart, FaShoppingCart, FaUser, FaBox, FaCog, FaSignOutAlt } from "react-icons/fa";
@@ -73,6 +73,22 @@ function Navbar() {
 
       {/* Actions */}
       <div className="flex items-center gap-6">
+        {user?.role?.toLowerCase() === "admin" && (
+          <div className="relative group">
+            <Link
+              to="/admin"
+              className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-primary transition-colors"
+              title="Admin Panel"
+              replace
+              
+            >
+              <FaCog className="text-xl" />
+            </Link>
+            <div className="absolute -bottom-9 right-0 bg-primary text-background px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm shadow-lg pointer-events-none">
+              Admin
+            </div>
+          </div>
+        )}
         {/* Wishlist with original icon */}
         <div className="relative group">
           <Link

@@ -200,8 +200,8 @@ function Products() {
 
                   {/* Stock Status */}
                   <div className="mb-4">
-                    <span className={`text-sm ${product.quantity ? 'text-green-600' : 'text-red-600'}`}>
-                      {product.quantity ? '✓ In Stock' : '✗ Out of Stock'}
+                    <span className={`text-sm ${product.stock ? 'text-green-600' : 'text-red-600'}`}>
+                      {product.stock ? '✓ In Stock' : '✗ Out of Stock'}
                     </span>
                   </div>
 
@@ -214,8 +214,8 @@ function Products() {
                       }
                       addToCart(product)
                     }}
-                    disabled={!product.quantity}
-                    className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded font-medium ${product.quantity
+                    disabled={!product.stock}
+                    className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded font-medium ${product.stock
                       ? 'bg-secondary text-white hover:bg-accent transition-colors'
                       : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                       }`}

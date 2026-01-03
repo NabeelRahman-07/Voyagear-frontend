@@ -84,7 +84,9 @@ function Orders() {
                       <div className="text-2xl font-bold text-primary">₹{order.totalAmount}</div>
                       <div className={`text-sm font-medium px-3 py-1 rounded-full inline-block mt-2 ${
                         order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' :
-                        order.orderStatus === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                        order.orderStatus === 'Shipped' ? 'bg-purple-100 text-purple-800' :
+                        order.orderStatus === 'Processing' ? 'bg-blue-100 text-blue-800' :
+                        order.orderStatus === 'Cancelled' ? 'bg-red-100 text-red-800' :
                         'bg-yellow-100 text-yellow-800'
                       }`}>
                         {order.orderStatus || 'Processing'}
@@ -144,7 +146,7 @@ function Orders() {
         {orders.length > 0 && (
           <div className="mt-12 bg-white rounded-xl shadow-lg p-6">
             <h3 className="font-bold text-lg mb-4">Order Status Guide</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <div className="text-center p-4 border rounded-lg">
                 <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2">
                   <span className="text-yellow-600 font-bold">1</span>
@@ -172,6 +174,13 @@ function Orders() {
                 </div>
                 <p className="font-medium">Delivered</p>
                 <p className="text-sm text-gray-600">Order received</p>
+              </div>
+              <div className="text-center p-4 border rounded-lg">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <span className="text-red-600 font-bold">5</span>
+                </div>
+                <p className="font-medium">Cancelled</p>
+                <p className="text-sm text-gray-600">Order cancelled</p>
               </div>
             </div>
           </div>

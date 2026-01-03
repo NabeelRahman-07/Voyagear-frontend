@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FaBox, 
-  FaShoppingCart, 
-  FaUsers, 
-  FaRupeeSign, 
-  FaArrowUp, 
-  FaArrowDown,
+import {
+  FaBox,
+  FaShoppingCart,
+  FaUsers,
+  FaRupeeSign,
+  FaArrowUp,
   FaCalendarAlt,
   FaFilter,
   FaEye,
-  FaEdit,
-  FaTrash,
-  FaChartLine,
   FaShoppingBag
 } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
@@ -28,7 +24,6 @@ function AdminDashboard() {
   });
   const [recentOrders, setRecentOrders] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
-  const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('month');
 
@@ -39,7 +34,7 @@ function AdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch all data from your JSON server
       const [usersRes, productsRes] = await Promise.all([
         api.get('/users'),
@@ -58,8 +53,8 @@ function AdminDashboard() {
         if (user.orders && Array.isArray(user.orders)) {
           totalOrders += user.orders.length;
           user.orders.forEach(order => {
-            if (order.total) {
-              totalRevenue += order.total;
+            if (order.totalAmount) {
+              totalRevenue += order.totalAmount;
               allOrders.push({
                 ...order,
                 userName: user.name,
@@ -71,45 +66,45 @@ function AdminDashboard() {
       });
 
       // Sort orders by date (most recent first)
-      const sortedOrders = allOrders.sort((a, b) => 
-        new Date(b.date || b.orderDate) - new Date(a.date || a.orderDate)
+      const sortedOrders = allOrders.sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
       ).slice(0, 5);
 
-    //   // Get recent users (non-admin)
-    //   const recentUsersList = users
-    //     .filter(user => user.role !== 'admin')
-    //     .sort((a, b) => new Date(b.createdAt || b.joinedDate) - new Date(a.createdAt || a.joinedDate))
-    //     .slice(0, 5);
+      // Get recent users (non-admin)
+      const recentUsers = users
+        .filter(user => user.role !== 'Admin')
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 3);
 
-      // Calculate top products (from all users' orders)
-      const productSales = {};
-      allOrders.forEach(order => {
-        if (order.items && Array.isArray(order.items)) {
-          order.items.forEach(item => {
-            const productId = item.productId || item.id;
-            if (!productSales[productId]) {
-              productSales[productId] = { 
-                quantity: 0, 
-                revenue: 0,
-                name: products.find(p => p.id === productId)?.name || 'Unknown Product'
-              };
-            }
-            productSales[productId].quantity += item.quantity || 1;
-            productSales[productId].revenue += (item.price || 0) * (item.quantity || 1);
-          });
-        }
-      });
+      // // Calculate top products (from all users' orders)
+      // const productSales = {};
+      // allOrders.forEach(order => {
+      //   if (order.items && Array.isArray(order.items)) {
+      //     order.items.forEach(item => {
+      //       const productId = item.productId || item.id;
+      //       if (!productSales[productId]) {
+      //         productSales[productId] = {
+      //           quantity: 0,
+      //           revenue: 0,
+      //           name: products.find(p => p.id === productId)?.name || 'Unknown Product'
+      //         };
+      //       }
+      //       productSales[productId].quantity += item.quantity || 1;
+      //       productSales[productId].revenue += (item.price || 0) * (item.quantity || 1);
+      //     });
+      //   }
+      // });
 
       // Convert to array and sort
-      const topProductsList = Object.entries(productSales)
-        .map(([productId, data]) => ({
-          id: productId,
-          name: data.name,
-          sales: data.quantity,
-          revenue: data.revenue
-        }))
-        .sort((a, b) => b.revenue - a.revenue)
-        .slice(0, 5);
+      // const topProductsList = Object.entries(productSales)
+      //   .map(([productId, data]) => ({
+      //     id: productId,
+      //     name: data.name,
+      //     sales: data.quantity,
+      //     revenue: data.revenue
+      //   }))
+      //   .sort((a, b) => b.revenue - a.revenue)
+      //   .slice(0, 5);
 
       // Calculate changes (simplified - you can add time-based filtering)
       const revenueChange = 12.5; // You can implement actual time comparison
@@ -125,8 +120,7 @@ function AdminDashboard() {
       });
 
       setRecentOrders(sortedOrders);
-      setRecentUsers(recentUsersList);
-      setTopProducts(topProductsList);
+      setRecentUsers(recentUsers)
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -153,15 +147,15 @@ function AdminDashboard() {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'pending': { color: 'bg-yellow-100 text-yellow-800', label: 'Pending' },
-      'processing': { color: 'bg-blue-100 text-blue-800', label: 'Processing' },
-      'shipped': { color: 'bg-purple-100 text-purple-800', label: 'Shipped' },
-      'delivered': { color: 'bg-green-100 text-green-800', label: 'Delivered' },
-      'cancelled': { color: 'bg-red-100 text-red-800', label: 'Cancelled' }
+      'Placed': { color: 'bg-yellow-100 text-yellow-800', label: 'Placed' },
+      'Processing': { color: 'bg-blue-100 text-blue-800', label: 'Processing' },
+      'Shipped': { color: 'bg-purple-100 text-purple-800', label: 'Shipped' },
+      'Delivered': { color: 'bg-green-100 text-green-800', label: 'Delivered' },
+      'Cancelled': { color: 'bg-red-100 text-red-800', label: 'Cancelled' }
     };
 
-    const config = statusConfig[status?.toLowerCase()] || { color: 'bg-gray-100 text-gray-800', label: 'Unknown' };
-    
+    const config = statusConfig[status] || { color: 'bg-gray-100 text-gray-800', label: 'Unknown' };
+
     return (
       <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
         {config.label}
@@ -190,9 +184,9 @@ function AdminDashboard() {
             <p className="text-gray-600">Welcome back, Admin! Here's your store summary.</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
+            {/* <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
               <FaCalendarAlt className="text-gray-500" />
-              <select 
+              <select
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
                 className="bg-transparent border-none focus:outline-none text-sm"
@@ -202,8 +196,8 @@ function AdminDashboard() {
                 <option value="quarter">Last 3 months</option>
                 <option value="year">Last year</option>
               </select>
-            </div>
-            <button 
+            </div> */}
+            <button
               onClick={fetchDashboardData}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 flex items-center gap-2 transition-colors"
             >
@@ -301,7 +295,6 @@ function AdminDashboard() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -309,7 +302,7 @@ function AdminDashboard() {
                   recentOrders.map((order) => (
                     <tr key={order.id || order.orderId} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {order.id || order.orderId || 'N/A'}
+                        {order.orderId}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div>
@@ -318,18 +311,13 @@ function AdminDashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {formatDate(order.date || order.orderDate)}
+                        {formatDate(order.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                        {formatCurrency(order.total || 0)}
+                        {formatCurrency(order.totalAmount)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {getStatusBadge(order.status)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <button className="text-primary hover:text-primary/80 p-1">
-                          <FaEye />
-                        </button>
+                        {getStatusBadge(order.orderStatus)}
                       </td>
                     </tr>
                   ))
@@ -345,122 +333,69 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Top Products
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        {/* Recent Users*/}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <FaChartLine />
-                Top Selling Products
+                <FaUsers />
+                Recent Customers
               </h2>
-              <Link to="/admin/products" className="text-primary hover:text-primary/80 text-sm font-medium">
+              <Link to="/admin/users" className="text-primary hover:text-primary/80 text-sm font-medium">
                 View All →
               </Link>
             </div>
           </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {topProducts.length > 0 ? (
-                topProducts.map((product, index) => (
-                  <div key={product.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-gray-100 w-10 h-10 rounded-lg flex items-center justify-center">
-                        <span className="font-bold text-gray-700">{index + 1}</span>
-                      </div>
-                      <div>
-                        <div className="font-medium text-gray-900">{product.name}</div>
-                        <div className="text-sm text-gray-500">{product.sales} units sold</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-gray-900">{formatCurrency(product.revenue)}</div>
-                      <div className="text-sm text-gray-500">Revenue</div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  No sales data available
-                </div>
-              )}
-            </div>
-          </div>
-        </div>*/}
-      </div> 
-
-      {/* Recent Users
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <FaUsers />
-              Recent Customers
-            </h2>
-            <Link to="/admin/users" className="text-primary hover:text-primary/80 text-sm font-medium">
-              View All →
-            </Link>
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Orders</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {recentUsers.length > 0 ? (
-                recentUsers.map((user) => {
-                  const orderCount = user.orders?.length || 0;
-                  return (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white font-medium">
-                            {user.name?.charAt(0) || 'U'}
-                          </div>
-                          <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {formatDate(user.createdAt || user.joinedDate || new Date())}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                          {orderCount} orders
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div className="flex items-center gap-2">
-                          <button className="text-primary hover:text-primary/80 p-1">
-                            <FaEye />
-                          </button>
-                          <button className="text-blue-600 hover:text-blue-800 p-1">
-                            <FaEdit />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
-                    No customers found
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Orders</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {recentUsers.length > 0 ? (
+                  recentUsers.map((user) => {
+                    const orderCount = user.orders?.length || 0;
+                    return (
+                      <tr key={user.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white font-medium">
+                              {user.name?.charAt(0) || 'U'}
+                            </div>
+                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatDate(user.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                            {orderCount} orders
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                      No customers found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div> */}
+      </div>
 
-      {/* Quick Stats Summary */}
+      {/* Quick Stats Summary
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
           <div className="flex items-center gap-3 mb-3">
@@ -500,7 +435,7 @@ function AdminDashboard() {
           </div>
           <div className="text-sm text-gray-500">Registered users</div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

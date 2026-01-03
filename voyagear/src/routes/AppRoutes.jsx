@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import MainLayout from '../components/layout/MainLayout'
-import Home from '../pages/home/home'
+import Home from '../pages/home/Home'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 import { AuthProvider } from '../context/AuthContext'
@@ -23,7 +23,6 @@ import AdminProducts from '../admin/pages/AdminProducts'
 import AdminOrders from '../admin/pages/AdminOrders'
 import AdminCustomers from '../admin/pages/AdminCustomers'
 import AdminAnalytics from '../admin/pages/AdminAnalytics'
-
 
 function AppRoutes() {
   return (

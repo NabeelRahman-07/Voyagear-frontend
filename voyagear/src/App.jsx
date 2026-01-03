@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <ToastContainer 
-      autoClose={2500}
+      autoClose={2000}
       />
       <BrowserRouter>
         <ScrollToTop />

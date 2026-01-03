@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaSignOutAlt, FaHome } from 'react-icons/fa';
 import { removeUser } from '../../components/common/StorageService';
 import logo from '../../assets/logo.png'
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 
 function AdminNavbar({ toggleSidebar }) {
     const navigate = useNavigate();
+    const {logout}=useContext(AuthContext);
 
     const handleLogout = () => {
         // Clear admin session
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminUser');
-        navigate('/login');
+        logout();
+        toast.success("User logged out!")
+        navigate('/login',{replace:true});
     };
 
     return (
@@ -47,10 +50,8 @@ function AdminNavbar({ toggleSidebar }) {
                 <div className="flex items-center gap-3">
                     {/* Store Link */}
                     <button
-
                         onClick={() => {
-                            removeUser();
-                            navigate('/')
+                            navigate('/',{replace:true});
                         }}
                         className="p-1.5 text-gray-600 hover:text-primary hover:bg-gray-100 rounded"
                         title="View Store"

@@ -264,7 +264,7 @@ function Hero() {
                 <img
                   src={brand.logo}
                   alt={brand.name}
-                  className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity"
+                  className="h-12 object-contain  transition-opacity"
                 />
               </div>
             ))}
