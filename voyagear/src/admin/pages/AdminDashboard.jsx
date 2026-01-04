@@ -76,38 +76,9 @@ function AdminDashboard() {
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 3);
 
-      // // Calculate top products (from all users' orders)
-      // const productSales = {};
-      // allOrders.forEach(order => {
-      //   if (order.items && Array.isArray(order.items)) {
-      //     order.items.forEach(item => {
-      //       const productId = item.productId || item.id;
-      //       if (!productSales[productId]) {
-      //         productSales[productId] = {
-      //           quantity: 0,
-      //           revenue: 0,
-      //           name: products.find(p => p.id === productId)?.name || 'Unknown Product'
-      //         };
-      //       }
-      //       productSales[productId].quantity += item.quantity || 1;
-      //       productSales[productId].revenue += (item.price || 0) * (item.quantity || 1);
-      //     });
-      //   }
-      // });
-
-      // Convert to array and sort
-      // const topProductsList = Object.entries(productSales)
-      //   .map(([productId, data]) => ({
-      //     id: productId,
-      //     name: data.name,
-      //     sales: data.quantity,
-      //     revenue: data.revenue
-      //   }))
-      //   .sort((a, b) => b.revenue - a.revenue)
-      //   .slice(0, 5);
 
       // Calculate changes (simplified - you can add time-based filtering)
-      const revenueChange = 12.5; // You can implement actual time comparison
+      const revenueChange = 12.5; 
       const orderChange = 8.2;
 
       setStats({
@@ -184,19 +155,6 @@ function AdminDashboard() {
             <p className="text-gray-600">Welcome back, Admin! Here's your store summary.</p>
           </div>
           <div className="flex items-center gap-3">
-            {/* <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
-              <FaCalendarAlt className="text-gray-500" />
-              <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-                className="bg-transparent border-none focus:outline-none text-sm"
-              >
-                <option value="week">Last 7 days</option>
-                <option value="month">Last 30 days</option>
-                <option value="quarter">Last 3 months</option>
-                <option value="year">Last year</option>
-              </select>
-            </div> */}
             <button
               onClick={fetchDashboardData}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 flex items-center gap-2 transition-colors"
@@ -394,48 +352,6 @@ function AdminDashboard() {
           </div>
         </div>
       </div>
-
-      {/* Quick Stats Summary
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <FaShoppingCart className="text-primary" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">{stats.totalOrders}</div>
-              <div className="text-sm text-gray-600">Total Orders</div>
-            </div>
-          </div>
-          <div className="text-sm text-gray-500">Across all customers</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <FaRupeeSign className="text-primary" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.totalRevenue)}</div>
-              <div className="text-sm text-gray-600">Total Revenue</div>
-            </div>
-          </div>
-          <div className="text-sm text-gray-500">Lifetime sales</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <FaUsers className="text-primary" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">{stats.totalUsers}</div>
-              <div className="text-sm text-gray-600">Active Customers</div>
-            </div>
-          </div>
-          <div className="text-sm text-gray-500">Registered users</div>
-        </div>
-      </div> */}
     </div>
   );
 }

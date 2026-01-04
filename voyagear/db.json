@@ -89,7 +89,7 @@
       "email": "rashid@gmail.com",
       "password": "987654321",
       "role": "User",
-      "isBlock": true,
+      "isBlock": false,
       "createdAt": "2025-12-30T03:22:25.500Z",
       "cart": [],
       "wishlist": [],
