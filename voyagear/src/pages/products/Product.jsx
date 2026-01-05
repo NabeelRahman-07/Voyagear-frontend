@@ -172,7 +172,7 @@ function Products() {
                       }}
                     />
                   </Link>
-                  {product['original price'] > product.price && (
+                  {product .originalPrice> product.price && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm">
                       Sale
                     </div>
@@ -191,9 +191,9 @@ function Products() {
                     <span className="text-xl font-bold text-primary">
                       ₹{product.price}
                     </span>
-                    {product['original price'] > product.price && (
+                    {product.originalPrice > product.price && (
                       <span className="text-gray-400 line-through">
-                        ₹{product['original price']}
+                        ₹{product.originalPrice}
                       </span>
                     )}
                   </div>

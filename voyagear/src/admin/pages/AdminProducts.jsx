@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaPlus, FaSearch, FaTimes, FaSave } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
+import { toast } from 'react-toastify';
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -20,16 +21,13 @@ function AdminProducts() {
     image: ''
   });
 
-  // Edit product states
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState({});
-
-  // Delete product states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
-  // Loading states
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -54,14 +52,18 @@ function AdminProducts() {
     setEditedProduct({ 
       ...product,
       // Ensure originalPrice is included
-      originalPrice: product['original price'] || product.originalPrice || ''
+      originalPrice:product.originalPrice
     });
     setShowEditModal(true);
   };
 
   const handleSaveEdit = async () => {
-    if (!editedProduct.name || !editedProduct.price || !editedProduct.category) {
-      alert('Please fill in all required fields');
+    if (!editedProduct.name || !editedProduct.price || !editedProduct.category || editedProduct.price<=0) {
+      if(newProduct.price<=0){
+        toast.error("Price can not be '0'");
+        return
+      }
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -70,12 +72,9 @@ function AdminProducts() {
       // Prepare data with correct field names
       const productData = {
         ...editedProduct,
-        // Ensure "original price" field matches your data structure
-        'original price': editedProduct.originalPrice || editedProduct.price
+        originalPrice: editedProduct.originalPrice 
       };
       
-      // Remove the camelCase version if it exists
-      delete productData.originalPrice;
 
       await api.put(`/products/${selectedProduct.id}`, productData);
 
@@ -86,10 +85,11 @@ function AdminProducts() {
 
       setShowEditModal(false);
       setSelectedProduct(null);
+      toast.success('Changed product details')
       setEditedProduct({});
     } catch (error) {
       console.error('Error updating product:', error);
-      alert('Failed to update product');
+      toast.error('Failed to update product');
     } finally {
       setIsSaving(false);
     }
@@ -111,9 +111,10 @@ function AdminProducts() {
 
       setShowDeleteModal(false);
       setProductToDelete(null);
+      toast.success('Product deleted')
     } catch (error) {
       console.error('Error deleting product:', error);
-      alert('Failed to delete product');
+      toast.error('Failed to delete product');
     } finally {
       setIsDeleting(false);
     }
@@ -122,8 +123,12 @@ function AdminProducts() {
   // Add new product functions
   const handleAddProduct = async () => {
     // Validate required fields
-    if (!newProduct.name || !newProduct.price || !newProduct.category) {
-      alert('Please fill in name, price, and category');
+    if (!newProduct.name || !newProduct.price || !newProduct.category || newProduct.price<=0) {
+      if(newProduct.price<=0){
+        toast.error("Price can not be '0'");
+        return
+      }
+      toast.error('Please fill in name, price, and category');
       return;
     }
 
@@ -132,12 +137,12 @@ function AdminProducts() {
       const productToAdd = {
         name: newProduct.name,
         category: newProduct.category,
-        description: newProduct.description || '',
-        stock: parseInt(newProduct.stock) || 0,
+        description: newProduct.description,
+        stock: parseInt(newProduct.stock),
         price: parseFloat(newProduct.price),
-        'original price': parseFloat(newProduct.originalPrice) || parseFloat(newProduct.price),
+        originalPrice: parseFloat(newProduct.originalPrice),
         image: newProduct.image || '',
-        id: Math.max(0, ...products.map(p => p.id)) + 1 // Generate new ID
+        id: String(Math.max(0, ...products.map(p => p.id)) + 1) // Generate new ID
       };
 
       const response = await api.post('/products', productToAdd);
@@ -156,10 +161,11 @@ function AdminProducts() {
         image: ''
       });
       setShowAddModal(false);
+      toast.success('New product added')
 
     } catch (error) {
       console.error('Error adding product:', error);
-      alert('Failed to add product');
+      toast.error('Failed to add product');
     }
   };
 
@@ -230,7 +236,7 @@ function AdminProducts() {
           </div>
         </div>
 
-        {/* Products Table - Keep your existing table structure, just update the price display */}
+        {/* Products Table */}
         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
           {loading ? (
             <div className="p-8 text-center">
@@ -251,7 +257,7 @@ function AdminProducts() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {filteredProducts.map((product) => {
-                    const originalPrice = product['original price'] || product.price;
+                    const originalPrice = product.originalPrice;
                     const discount = calculateDiscount(product.price, originalPrice);
                     
                     return (

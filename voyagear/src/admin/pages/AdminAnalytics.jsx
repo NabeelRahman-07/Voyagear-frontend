@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-  LineChart, Line, BarChart, Bar,
+  AreaChart, Area,
   PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  Legend, RadialBarChart, RadialBar, AreaChart, Area
+  Legend
 } from "recharts";
 import {
   TrendingUp, Users, IndianRupeeIcon, Package,
@@ -11,14 +11,11 @@ import {
 } from "lucide-react";
 import api from "../../api/axiosInstance";
 
-const COLORS = ["#0B3C5D", "#FF7A18", "#1D6F42", "#6C63FF", "#FF6B6B"];
-
 function AdminAnalytics() {
   const [stats, setStats] = useState([]);
   const [userStats, setUserStats] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState("7d");
   const [metrics, setMetrics] = useState({
     totalOrders: 0,
     totalRevenue: 0,
@@ -29,7 +26,7 @@ function AdminAnalytics() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, []);
 
   const fetchAnalytics = async () => {
     try {
@@ -59,30 +56,35 @@ function AdminAnalytics() {
 
           // Track top products
           order.items?.forEach(item => {
-            const productId = item.product?._id || item.product;
+            const productId = item.productId;
             if (!productSales[productId]) {
               productSales[productId] = {
-                name: item.product?.name || "Unknown Product",
+                name: item.name,
                 sales: 0,
                 revenue: 0
               };
             }
-            productSales[productId].sales += item.quantity || 1;
-            productSales[productId].revenue += (item.price || 0) * (item.quantity || 1);
+            productSales[productId].sales += item.quantity;
+            productSales[productId].revenue += (item.price) * (item.quantity);
           });
         });
       });
 
+      // Sort stats by date ascending
+      const sortedStats = Object.values(dailyData).sort((a, b) => 
+        new Date(a.date) - new Date(b.date)
+      );
+
       const sortedProducts = Object.values(productSales)
         .sort((a, b) => b.revenue - a.revenue)
-        .slice(0, 5);
+        .slice(0, 3);
 
-      setStats(Object.values(dailyData));
+      setStats(sortedStats);
       setTopProducts(sortedProducts);
       
       setUserStats([
-        { name: "Active Users", value: users.length - blocked, fill: "#0B3C5D" },
-        { name: "Blocked Users", value: blocked, fill: "#FF7A18" }
+        { name: "Active Users", value: users.length - blocked },
+        { name: "Blocked Users", value: blocked }
       ]);
 
       setMetrics({
@@ -100,17 +102,14 @@ function AdminAnalytics() {
     }
   };
 
-  const MetricCard = ({ title, value, icon: Icon, change, color }) => (
-    <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-2 rounded-lg`} style={{ backgroundColor: `${color}15` }}>
-          <Icon className="h-6 w-6" style={{ color }} />
+  const MetricCard = ({ title, value, icon: Icon }) => (
+    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-center mb-4">
+        <div className="p-3 rounded-lg bg-primary/10">
+          <Icon className="h-7 w-7 text-primary" />
         </div>
-        <span className={`text-sm font-medium ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {change >= 0 ? '+' : ''}{change}%
-        </span>
       </div>
-      <h3 className="text-2xl font-bold text-gray-800">{value}</h3>
+      <h3 className="text-2xl font-bold text-gray-900">{value}</h3>
       <p className="text-gray-600 text-sm mt-1">{title}</p>
     </div>
   );
@@ -133,34 +132,17 @@ function AdminAnalytics() {
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-1">Monitor your business performance in real-time</p>
+          <p className="text-gray-600 mt-1">Monitor your business performance</p>
         </div>
-        <div className="flex items-center space-x-4 mt-4 md:mt-0">
-          <div className="flex bg-white rounded-lg border p-1">
-            {["24h", "7d", "30d", "90d"].map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  timeRange === range
-                    ? "bg-primary text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {range}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={fetchAnalytics}
-            className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Refresh
-          </button>
-        </div>
+        <button
+          onClick={fetchAnalytics}
+          className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2 mt-4 md:mt-0"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Refresh Data
+        </button>
       </div>
 
       {/* Metrics Grid */}
@@ -169,49 +151,41 @@ function AdminAnalytics() {
           title="Total Revenue"
           value={`₹${metrics.totalRevenue.toLocaleString()}`}
           icon={IndianRupeeIcon}
-          change={12.5}
-          color="#0B3C5D"
         />
         <MetricCard
           title="Total Orders"
           value={metrics.totalOrders.toLocaleString()}
           icon={ShoppingCart}
-          change={8.2}
-          color="#FF7A18"
         />
         <MetricCard
           title="Active Users"
           value={metrics.activeUsers.toLocaleString()}
           icon={UserCheck}
-          change={5.7}
-          color="#1D6F42"
         />
         <MetricCard
           title="Avg Order Value"
           value={`₹${metrics.avgOrderValue.toFixed(2)}`}
           icon={TrendingUp}
-          change={3.4}
-          color="#6C63FF"
         />
       </div>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Orders & Revenue Chart */}
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Orders & Revenue</h2>
+              <h2 className="text-xl font-bold text-gray-900">Orders & Revenue Trend</h2>
               <p className="text-gray-600 text-sm">Daily performance overview</p>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <div className="w-3 h-3 rounded-full bg-[#FF7A18] mr-2"></div>
+                <div className="w-3 h-3 rounded-full bg-secondary mr-2"></div>
                 <span className="text-sm text-gray-600">Orders</span>
               </div>
               <div className="flex items-center">
-                <div className="w-3 h-3 rounded-full bg-[#0B3C5D] mr-2"></div>
-                <span className="text-sm text-gray-600">Revenue (₹)</span>
+                <div className="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                <span className="text-sm text-gray-600">Revenue</span>
               </div>
             </div>
           </div>
@@ -234,11 +208,14 @@ function AdminAnalytics() {
                   borderRadius: '8px',
                   boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                 }}
+                formatter={(value, name) => {
+                  if (name === 'revenue') return [`₹${value}`, 'Revenue'];
+                  return [value, 'Orders'];
+                }}
               />
               <Area 
                 type="monotone" 
                 dataKey="orders" 
-                stackId="1"
                 stroke="#FF7A18" 
                 fill="#FF7A18" 
                 fillOpacity={0.1}
@@ -247,7 +224,6 @@ function AdminAnalytics() {
               <Area 
                 type="monotone" 
                 dataKey="revenue" 
-                stackId="2"
                 stroke="#0B3C5D" 
                 fill="#0B3C5D" 
                 fillOpacity={0.1}
@@ -258,7 +234,7 @@ function AdminAnalytics() {
         </div>
 
         {/* User Distribution */}
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-gray-900">User Distribution</h2>
             <p className="text-gray-600 text-sm">Active vs Blocked users</p>
@@ -277,9 +253,8 @@ function AdminAnalytics() {
                   paddingAngle={5}
                   label={(entry) => `${entry.name}: ${entry.value}`}
                 >
-                  {userStats.map((entry, index) => (
-                    <Cell key={index} fill={entry.fill} />
-                  ))}
+                  <Cell key="active-users" fill="#0B3C5D" />
+                  <Cell key="blocked-users" fill="#FF7A18" />
                 </Pie>
                 <Tooltip 
                   formatter={(value) => [value, 'Users']}
@@ -295,11 +270,11 @@ function AdminAnalytics() {
           </div>
           <div className="grid grid-cols-2 gap-4 mt-6">
             <div className="text-center p-4 rounded-lg bg-blue-50">
-              <div className="text-2xl font-bold text-[#0B3C5D]">{metrics.activeUsers}</div>
+              <div className="text-2xl font-bold text-primary">{metrics.activeUsers}</div>
               <div className="text-sm text-gray-600">Active Users</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-orange-50">
-              <div className="text-2xl font-bold text-[#FF7A18]">{metrics.blockedUsers}</div>
+              <div className="text-2xl font-bold text-secondary">{metrics.blockedUsers}</div>
               <div className="text-sm text-gray-600">Blocked Users</div>
             </div>
           </div>
@@ -309,10 +284,10 @@ function AdminAnalytics() {
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Products */}
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Top Products</h2>
+              <h2 className="text-xl font-bold text-gray-900">Top Performing Products</h2>
               <p className="text-gray-600 text-sm">By revenue generated</p>
             </div>
             <Package className="text-gray-400" />
@@ -339,17 +314,17 @@ function AdminAnalytics() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
-              <p className="text-gray-600 text-sm">Latest orders and user actions</p>
+              <p className="text-gray-600 text-sm">Latest orders performance</p>
             </div>
             <Calendar className="text-gray-400" />
           </div>
           <div className="space-y-4">
             {stats.slice(-3).reverse().map((day, index) => (
-              <div key={index} className="p-4 border rounded-lg hover:border-primary/30 transition-colors">
+              <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors">
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="font-medium text-gray-900">{day.date}</div>

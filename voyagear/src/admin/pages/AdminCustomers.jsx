@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEye, FaUserEdit, FaEnvelope, FaCalendar, FaShoppingCart, FaBan, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
+import { toast } from 'react-toastify';
 
 function AdminCustomers() {
   const [customers, setCustomers] = useState([]);
@@ -83,8 +84,10 @@ function AdminCustomers() {
       });
       fetchCustomers();
       setShowBlockModal(false);
+      if(!selectedCustomer.isBlock){toast.success('User has been blocked')}else{toast.success('User has been unblocked')}
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Failed to block user')
     }
   };
 

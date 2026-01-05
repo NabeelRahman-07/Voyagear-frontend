@@ -124,29 +124,29 @@ function ProductDetails() {
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl font-bold text-primary">₹{product.price}</span>
-                  {product['original price'] > product.price && (
+                  {product.originalPrice > product.price && (
                     <>
                       <span className="text-xl text-gray-400 line-through">
-                        ₹{product['original price']}
+                        ₹{product.originalPrice}
                       </span>
                       <span className="bg-red-100 text-red-600 px-2 py-1 rounded text-sm font-bold">
-                        Save ₹{product['original price'] - product.price}
+                        Save ₹{product.originalPrice - product.price}
                       </span>
                     </>
                   )}
                 </div>
-                {product['original price'] > product.price && (
+                {product.originalPrice > product.price && (
                   <p className="text-sm text-green-600">
-                    {Math.round(((product['original price'] - product.price) / product['original price']) * 100)}% OFF
+                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
                   </p>
                 )}
               </div>
 
               {/* Stock Status */}
               <div>
-                <span className={`inline-flex items-center gap-2 ${product.quantity ? 'text-green-600' : 'text-red-600'}`}>
-                  <span className={`w-2 h-2 rounded-full ${product.quantity ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                  {product.quantity ? 'In Stock' : 'Out of Stock'}
+                <span className={`inline-flex items-center gap-2 ${product.stock ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className={`w-2 h-2 rounded-full ${product.stock ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                  {product.stock ? 'In Stock' : 'Out of Stock'}
                 </span>
               </div>
 
@@ -175,7 +175,7 @@ function ProductDetails() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                 {count ?(<button
                   // onClick={()=>navigate('/cart')}
-                  disabled={!product.quantity}
+                  disabled={!product.stock}
                   className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium 
                     bg-gray-200 text-gray-500 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed'
                     }`}
@@ -186,8 +186,8 @@ function ProductDetails() {
                 :
                 (<button
                   onClick={handleAddToCart}
-                  disabled={!product.quantity}
-                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
+                  disabled={!product.stock}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.stock
                     ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
                     : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     }`}
@@ -197,8 +197,8 @@ function ProductDetails() {
                 </button>) }
                 {/* <button
                   onClick={handleAddToCart}
-                  disabled={!product.quantity}
-                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
+                  disabled={!product.stock}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.stock
                     ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
                     : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     }`}
@@ -208,8 +208,8 @@ function ProductDetails() {
                 </button> */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={!product.quantity}
-                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.quantity
+                  disabled={!product.stock}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-lg text-lg font-medium ${product.stock
                     ? 'bg-secondary text-white hover:bg-accent'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}

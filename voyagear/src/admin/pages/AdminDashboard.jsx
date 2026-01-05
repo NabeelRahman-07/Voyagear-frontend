@@ -6,9 +6,7 @@ import {
   FaUsers,
   FaRupeeSign,
   FaArrowUp,
-  FaCalendarAlt,
   FaFilter,
-  FaEye,
   FaShoppingBag
 } from 'react-icons/fa';
 import api from '../../api/axiosInstance';
@@ -44,7 +42,7 @@ function AdminDashboard() {
       const users = usersRes.data;
       const products = productsRes.data;
 
-      // Calculate stats from users data (orders in each user's orders array)
+      // Calculate stats from users data 
       let totalRevenue = 0;
       let totalOrders = 0;
       let allOrders = [];
@@ -65,29 +63,24 @@ function AdminDashboard() {
         }
       });
 
-      // Sort orders by date (most recent first)
+      // Sort orders by date
       const sortedOrders = allOrders.sort((a, b) =>
         new Date(b.createdAt) - new Date(a.createdAt)
       ).slice(0, 5);
 
-      // Get recent users (non-admin)
+      // Get recent users 
       const recentUsers = users
         .filter(user => user.role !== 'Admin')
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 3);
 
 
-      // Calculate changes (simplified - you can add time-based filtering)
-      const revenueChange = 12.5; 
-      const orderChange = 8.2;
 
       setStats({
         totalRevenue,
         totalOrders,
         totalProducts: products.length,
-        totalUsers: users.filter(user => user.role !== 'admin').length,
-        revenueChange,
-        orderChange
+        totalUsers: users.filter(user => user.role !== 'admin').length
       });
 
       setRecentOrders(sortedOrders);
@@ -174,10 +167,6 @@ function AdminDashboard() {
             <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-3 rounded-lg text-white">
               <FaRupeeSign className="text-2xl" />
             </div>
-            <div className="flex items-center text-green-600">
-              <FaArrowUp className="mr-1" />
-              <span className="text-sm font-medium">+{stats.revenueChange}%</span>
-            </div>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-1">{formatCurrency(stats.totalRevenue)}</h3>
           <p className="text-sm text-gray-600">Total Revenue</p>
@@ -188,10 +177,6 @@ function AdminDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-3 rounded-lg text-white">
               <FaShoppingCart className="text-2xl" />
-            </div>
-            <div className="flex items-center text-green-600">
-              <FaArrowUp className="mr-1" />
-              <span className="text-sm font-medium">+{stats.orderChange}%</span>
             </div>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-1">{stats.totalOrders}</h3>
@@ -204,10 +189,6 @@ function AdminDashboard() {
             <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-lg text-white">
               <FaBox className="text-2xl" />
             </div>
-            <div className="flex items-center text-green-600">
-              <FaArrowUp className="mr-1" />
-              <span className="text-sm font-medium">+3.4%</span>
-            </div>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-1">{stats.totalProducts}</h3>
           <p className="text-sm text-gray-600">Total Products</p>
@@ -218,10 +199,6 @@ function AdminDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div className="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-lg text-white">
               <FaUsers className="text-2xl" />
-            </div>
-            <div className="flex items-center text-green-600">
-              <FaArrowUp className="mr-1" />
-              <span className="text-sm font-medium">+15.7%</span>
             </div>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-1">{stats.totalUsers}</h3>
