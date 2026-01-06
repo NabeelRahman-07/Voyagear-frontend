@@ -13,3 +13,5 @@ Functionalities:
 - Search & sorting products
 - Checkout page
 - Order history
+- Admin panel to get a overview of the website
+- Admin product Section, order section, customer section, analytics section
