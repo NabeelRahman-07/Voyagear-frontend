@@ -53,17 +53,24 @@ function Hero() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get('/products');
-        const products = response.data;
-        setFeaturedProducts(products.slice(0, 6));
+        const response = await api.get("/products");
+
+        const data = Array.isArray(response.data)
+          ? response.data
+          : [];
+
+        setFeaturedProducts(data.slice(0, 6));
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error fetching products:", error);
+        setFeaturedProducts([]); // 🔥 ensure array
       } finally {
         setLoading(false);
       }
     };
+
     fetchProducts();
   }, []);
+
 
   const features = [
     {
@@ -202,34 +209,35 @@ function Hero() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProducts.map((product, index) => (
-                <Link
-                  key={product.id}
-                  to={`/products/${product.id}`}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-slideUp group"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="h-56 overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <p className="text-gray-500 text-sm mb-1">{product.category}</p>
-                    <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-secondary transition-colors">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold text-primary">₹{product.price}</span>
-                      <span className="text-secondary font-medium group-hover:translate-x-1 transition-transform">
-                        View →
-                      </span>
+              {Array.isArray(featuredProducts) &&
+                featuredProducts.map((product, index) => (
+                  <Link
+                    key={product.id}
+                    to={`/products/${product.id}`}
+                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-slideUp group"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="h-56 overflow-hidden">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                  </div>
-                </Link>
-              ))}
+                    <div className="p-4">
+                      <p className="text-gray-500 text-sm mb-1">{product.category}</p>
+                      <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-secondary transition-colors">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold text-primary">₹{product.price}</span>
+                        <span className="text-secondary font-medium group-hover:translate-x-1 transition-transform">
+                          View →
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
             </div>
           )}
 
