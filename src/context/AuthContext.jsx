@@ -8,26 +8,29 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => getUser());
 
-  useEffect(()=>{
-    const chekUSer=async ()=>{
-      try{
-        const res=await api.get(`/users/${user.id}`);
-        const freshUser=res.data;
+  useEffect(() => {
+  if (!user || !user.id) return; // 🔥 FIX
 
-        if(freshUser.isBlock){
-          logout();
-          toast.error("Your account has been blocked by Admin");
-        }
-      }catch(err){
-        console.log("User status check failed",err); 
+  const checkUser = async () => {
+    try {
+      const res = await api.get(`/users/${user.id}`);
+      const freshUser = res.data;
+
+      if (freshUser.isBlock) {
+        logout();
+        toast.error("Your account has been blocked by Admin");
       }
-    };
-    chekUSer();
+    } catch (err) {
+      console.log("User status check failed", err);
+    }
+  };
 
-    const interval = setInterval(chekUSer, 5000);
+  checkUser();
+  const interval = setInterval(checkUser, 5000);
 
   return () => clearInterval(interval);
-  },[user])
+}, [user]);
+
 
   async function register(name, email, password) {
     const newUser = {
@@ -68,18 +71,18 @@ export function AuthProvider({ children }) {
       throw new Error("Password is incorrect")
     }
 
-    if(foundUser.isBlock==true){
+    if (foundUser.isBlock == true) {
       throw new Error("Your account has been blocked")
     }
-    const freshUser=await api.get(`/users/${foundUser.id}`);
+    const freshUser = await api.get(`/users/${foundUser.id}`);
 
     setUser(freshUser.data)
     saveUser(freshUser.data);
-    if(freshUser.data.role==="Admin"){
+    if (freshUser.data.role === "Admin") {
       toast.success("Admin logged in succesfully.")
       return;
-    }else{toast.success("User logged in succesfully.")}
-    
+    } else { toast.success("User logged in succesfully.") }
+
   }
 
   function logout() {
