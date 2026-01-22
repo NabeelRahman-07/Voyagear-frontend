@@ -25,17 +25,28 @@ function Products() {
       try {
         setLoading(true);
         const response = await api.get('/products');
-        setProducts(response.data);
+        const data = Array.isArray(response.data) ? response.data : [];
+        setProducts(data);
       } catch (err) {
         setError(err.message);
+        setProducts([]); // ensure array
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
   }, []);
+
   // to get unique categories
-  const categories = ['all', ...new Set(products.map(p => p.category))];
+  const categories = [
+    'all',
+    ...new Set(
+      Array.isArray(products)
+        ? products.map(p => p.category)
+        : []
+    ),
+  ];
+
 
   // Filter and sort products
   const filteredProducts = products
@@ -144,12 +155,12 @@ function Products() {
                 {/* Wishlist heart */}
                 <button
                   onClick={() => {
-                      if (!user) {
-                        toast.error("Please login to add product to wishlist.")
-                        return;
-                      }
-                      toggleWishlist(product)
-                    }}
+                    if (!user) {
+                      toast.error("Please login to add product to wishlist.")
+                      return;
+                    }
+                    toggleWishlist(product)
+                  }}
                   className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
                 >
                   <FaHeart
@@ -172,7 +183,7 @@ function Products() {
                       }}
                     />
                   </Link>
-                  {product .originalPrice> product.price && (
+                  {product.originalPrice > product.price && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm">
                       Sale
                     </div>
